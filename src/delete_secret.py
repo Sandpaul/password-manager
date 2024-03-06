@@ -14,15 +14,21 @@ def delete_secret(secret_id: str):
         status_code (int): the http status code from the request response.
     
     Raises:
+        ResourceNotFoundError: if no resource with the given secret_id is found.
+        
     """
 
     sm = boto3.client("secretsmanager")
 
-    response = sm.delete_secret(
-        SecretId=secret_id,
-        ForceDeleteWithoutRecovery=True,
-    )
+    try:
+        response = sm.delete_secret(
+            SecretId=secret_id,
+        )
 
-    status_code = response["ResponseMetadata"]["HTTPStatusCode"]
+        status_code = response["ResponseMetadata"]["HTTPStatusCode"]
 
-    return status_code
+        return status_code
+
+    except sm.exceptions.ResourceNotFoundException as r:
+        print(f"ResourceNotFound: {secret_id}.")
+        raise r

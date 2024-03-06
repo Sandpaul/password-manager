@@ -48,10 +48,19 @@ def password():
 
 @pytest.mark.describe("delete_secret()")
 @pytest.mark.it("should successfully delete a secret")
-def test_deletes_secret(mock_secretsmanager, secret_identifier, user_id, password):
+def test_deletes_secret(mock_secretsmanager, secret_identifier, user_id, password,):
     """delete_secret() should successfully delete a secret from AWS Secrets Manager."""
     create_secret(secret_identifier, user_id, password)
     assert list_secrets() == ["test_secret"]
     result = delete_secret(secret_identifier)
     assert list_secrets() == []
     assert result == 200
+
+
+@pytest.mark.describe("delete_secret()")
+@pytest.mark.it("should raise error when no secret found")
+def test_errors_when_secret_not_found(mock_secretsmanager,):
+    """delete_secret() raise an error when no secret with the passed secret_identifier is found."""
+    with pytest.raises(mock_secretsmanager.exceptions.ResourceNotFoundException):
+        delete_secret("missile_codes")
+        
