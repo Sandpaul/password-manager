@@ -53,3 +53,11 @@ def test_returns_string(mock_secretsmanager, secret_id, user_id, password,):
     create_secret(secret_id, user_id, password)
     result = get_secret(secret_id)
     assert isinstance(result, str)
+
+
+@pytest.mark.describe("get_secret()")
+@pytest.mark.it("should return a string of user_id and password")
+def test_returns_correct_string(mock_secretsmanager, secret_id, user_id, password,):
+    create_secret(secret_id, user_id, password)
+    result = get_secret(secret_id)
+    assert result == "{'user_id':test_id, 'password':test_password}"
