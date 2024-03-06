@@ -7,7 +7,7 @@ from moto import mock_aws
 import boto3
 import pytest
 
-from src.create_secret import create_secret, BlankArgumentError
+from src.create_secret import create_secret, BlankArgumentError, InvalidCharacterError
 
 
 @pytest.fixture(scope="function")
@@ -74,7 +74,7 @@ def test_secret_already_exists_error(mock_secretsmanager, secret_identifier, use
 @pytest.mark.describe("create_secret()")
 @pytest.mark.it("should error when any argument is blank")
 def test_blank_arguments_error(mock_secretsmanager, secret_identifier, user_id, password):
-    """create_secret() should raise an error if the secret_identifier is blank."""
+    """create_secret() should raise an error if the any argument is blank."""
     blank_secret_identifier = ""
     blank_user_id = ""
     blank_password = ""
@@ -84,3 +84,12 @@ def test_blank_arguments_error(mock_secretsmanager, secret_identifier, user_id, 
         create_secret(secret_identifier, blank_user_id, password)
     with pytest.raises(BlankArgumentError):
         create_secret(secret_identifier, user_id, blank_password)
+
+
+@pytest.mark.describe("create_secret()")
+@pytest.mark.it("should error when invalid characters are used in secret_identifier")
+def test_invalid_character_error(mock_secretsmanager, secret_identifier, user_id, password):
+    """create_secret() should raise an error if passed secret_identifier with invalid characters."""
+    invalid_secret_identifier = "±±±"
+    with pytest.raises(InvalidCharacterError):
+        create_secret(invalid_secret_identifier, user_id, password)
