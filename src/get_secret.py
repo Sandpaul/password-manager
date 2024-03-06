@@ -22,10 +22,15 @@ def get_secret(secret_id: str):
     
     sm = boto3.client("secretsmanager")
     
-    response = sm.get_secret_value(
-            SecretId=secret_id
-    )
-    return response['SecretString']
+    try:
+        response = sm.get_secret_value(
+                SecretId=secret_id
+        )
+        return response['SecretString']
+    
+    except sm.exceptions.ResourceNotFoundException as r:
+        print(f"ResourceNotFoundError: {secret_id} not found.")
+        raise r
 
 
 class BlankArgumentError(Exception):

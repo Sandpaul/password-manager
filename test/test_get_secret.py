@@ -70,3 +70,11 @@ def test_errors_on_invalid_id(mock_secretsmanager, secret_id, user_id, password,
     create_secret(secret_id, user_id, password)
     with pytest.raises(BlankArgumentError):
         get_secret("")
+
+
+@pytest.mark.describe("get_secret()")
+@pytest.mark.it("should raise error when secret cannot be found")
+def test_errors_on_secret_not_found(mock_secretsmanager):
+    """get_secret() should raise ResourceNotFoundException when secret not found."""
+    with pytest.raises(mock_secretsmanager.exceptions.ResourceNotFoundException):
+        get_secret("missile_codes")
