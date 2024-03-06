@@ -15,8 +15,14 @@ def delete_secret(secret_id: str):
     
     Raises:
         ResourceNotFoundError: if no resource with the given secret_id is found.
+        BlankArgumentError: if passed a blank secret_id.
         
     """
+
+    if len(secret_id) == 0:
+        raise BlankArgumentError(
+            print("BlankArgumentError: secret_id cannot be blank.")
+        )
 
     sm = boto3.client("secretsmanager")
 
@@ -32,3 +38,6 @@ def delete_secret(secret_id: str):
     except sm.exceptions.ResourceNotFoundException as r:
         print(f"ResourceNotFound: {secret_id}.")
         raise r
+
+class BlankArgumentError(Exception):
+    """Traps errors where blank arguments are passed."""

@@ -8,7 +8,7 @@ from moto import mock_aws
 
 from src.create_secret import create_secret
 from src.list_secrets import list_secrets
-from src.delete_secret import delete_secret
+from src.delete_secret import delete_secret, BlankArgumentError
 
 
 @pytest.fixture(scope="function")
@@ -63,4 +63,12 @@ def test_errors_when_secret_not_found(mock_secretsmanager,):
     """delete_secret() raise an error when no secret with the passed secret_identifier is found."""
     with pytest.raises(mock_secretsmanager.exceptions.ResourceNotFoundException):
         delete_secret("missile_codes")
+
+
+@pytest.mark.describe("delete_secret()")
+@pytest.mark.it("should raise error when passed blank secret_id")
+def test_errors_when_passed_secret_id_is_blank(mock_secretsmanager,):
+    """delete_secret() raise an error when passed secret_id is blank."""
+    with pytest.raises(BlankArgumentError):
+        delete_secret("")
         
