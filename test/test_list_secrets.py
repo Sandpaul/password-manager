@@ -52,3 +52,23 @@ def test_returns_list(mock_secretsmanager, secret_identifier, user_id, password)
     create_secret(secret_identifier, user_id, password)
     result = list_secrets()
     assert isinstance(result, list)
+
+
+@pytest.mark.describe("list_secrets()")
+@pytest.mark.it("should return correct secret names")
+def test_returns_correct_list(mock_secretsmanager, secret_identifier, user_id, password):
+    """list_secrets() should return a containing the correct secret names."""
+    create_secret(secret_identifier, user_id, password)
+    result = list_secrets()
+    assert result == ["test_secret"]
+
+
+@pytest.mark.describe("list_secrets()")
+@pytest.mark.it("should return correct secret names when there are multiple secrets")
+def test_returns_correct_list_for_multiple_secrets(mock_secretsmanager, secret_identifier, user_id, password):
+    """list_secrets() should return a containing the correct secret names when there are multiple secrets."""
+    create_secret(secret_identifier, user_id, password)
+    create_secret("test_secret2", user_id, password)
+    create_secret("test_secret3", user_id, password)
+    result = list_secrets()
+    assert result == ["test_secret", "test_secret2", "test_secret3"]

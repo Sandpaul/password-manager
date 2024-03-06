@@ -7,7 +7,7 @@ def list_secrets() -> list:
     """A function to retrieve a list of all the secrets stored in AWS Secrets Manager.
 
     Returns:
-        list: _description_
+        secret_list (list): a list of AWS Secrets Manager names.
     """
 
     sm = boto3.client('secretsmanager')
