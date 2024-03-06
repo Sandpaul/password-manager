@@ -48,7 +48,12 @@ def password():
 
 @pytest.mark.describe("delete_secret()")
 @pytest.mark.it("should successfully delete a secret")
-def test_deletes_secret(mock_secretsmanager, secret_identifier, user_id, password,):
+def test_deletes_secret(
+    mock_secretsmanager,
+    secret_identifier,
+    user_id,
+    password,
+):
     """delete_secret() should successfully delete a secret from AWS Secrets Manager."""
     create_secret(secret_identifier, user_id, password)
     assert list_secrets() == ["test_secret"]
@@ -59,7 +64,9 @@ def test_deletes_secret(mock_secretsmanager, secret_identifier, user_id, passwor
 
 @pytest.mark.describe("delete_secret()")
 @pytest.mark.it("should raise error when no secret found")
-def test_errors_when_secret_not_found(mock_secretsmanager,):
+def test_errors_when_secret_not_found(
+    mock_secretsmanager,
+):
     """delete_secret() raise an error when no secret with the passed secret_identifier is found."""
     with pytest.raises(mock_secretsmanager.exceptions.ResourceNotFoundException):
         delete_secret("missile_codes")
@@ -67,8 +74,9 @@ def test_errors_when_secret_not_found(mock_secretsmanager,):
 
 @pytest.mark.describe("delete_secret()")
 @pytest.mark.it("should raise error when passed blank secret_id")
-def test_errors_when_passed_secret_id_is_blank(mock_secretsmanager,):
+def test_errors_when_passed_secret_id_is_blank(
+    mock_secretsmanager,
+):
     """delete_secret() raise an error when passed secret_id is blank."""
     with pytest.raises(BlankArgumentError):
         delete_secret("")
-        
