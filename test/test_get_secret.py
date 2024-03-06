@@ -7,9 +7,7 @@ import pytest
 from moto import mock_aws
 
 from src.create_secret import create_secret
-from src.delete_secret import delete_secret
-from src.get_secret import get_secret
-from src.list_secrets import list_secrets
+from src.get_secret import get_secret, BlankArgumentError
 
 
 @pytest.fixture(scope="function")
@@ -50,6 +48,7 @@ def password():
 @pytest.mark.describe("get_secret()")
 @pytest.mark.it("should return a string")
 def test_returns_string(mock_secretsmanager, secret_id, user_id, password,):
+    """get_secret() should return a string."""
     create_secret(secret_id, user_id, password)
     result = get_secret(secret_id)
     assert isinstance(result, str)
@@ -58,6 +57,16 @@ def test_returns_string(mock_secretsmanager, secret_id, user_id, password,):
 @pytest.mark.describe("get_secret()")
 @pytest.mark.it("should return a string of user_id and password")
 def test_returns_correct_string(mock_secretsmanager, secret_id, user_id, password,):
+    """get_secret() should return string of correct user_id and password."""
     create_secret(secret_id, user_id, password)
     result = get_secret(secret_id)
     assert result == "{'user_id':test_id, 'password':test_password}"
+
+
+@pytest.mark.describe("get_secret()")
+@pytest.mark.it("should raise error when passed invalid secret_id")
+def test_errors_on_invalid_id(mock_secretsmanager, secret_id, user_id, password,):
+    """get_secret() should raise BlankArgumentError when passed blank secret_id."""
+    create_secret(secret_id, user_id, password)
+    with pytest.raises(BlankArgumentError):
+        get_secret("")

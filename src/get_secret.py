@@ -15,9 +15,18 @@ def get_secret(secret_id: str):
     Raises:
     """
     
+    if len(secret_id) == 0:
+        raise BlankArgumentError(
+            print("BlankArgumentError: secret_id cannot be blank.")
+        )
+    
     sm = boto3.client("secretsmanager")
     
     response = sm.get_secret_value(
             SecretId=secret_id
     )
     return response['SecretString']
+
+
+class BlankArgumentError(Exception):
+    """Traps errors where blank arguments are passed."""
