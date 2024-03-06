@@ -95,3 +95,20 @@ def test_no_secrets(mock_secretsmanager):
     """list_secrets() should return an empty list when there are no secrets stored."""
     result = list_secrets()
     assert result == []
+
+
+@pytest.mark.describe("list_secrets()")
+@pytest.mark.it("should not return secrets that have been marked for deletion")
+def test_does_not_return_deleted_secrets(
+    mock_secretsmanager,
+    user_id,
+    password,
+):
+    """list_secrets() should return an empty list when there are no secrets stored."""
+    create_secret("test_secret1", user_id, password)
+    create_secret("test_secret2", user_id, password)
+    mock_secretsmanager.delete_secret(
+        SecretId="test_secret1",
+    )
+    result = list_secrets()
+    assert result == ["test_secret2"]
