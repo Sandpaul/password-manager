@@ -47,7 +47,12 @@ def password():
 
 @pytest.mark.describe("list_secrets()")
 @pytest.mark.it("should return a list")
-def test_returns_list(mock_secretsmanager, secret_identifier, user_id, password):
+def test_returns_list(
+    mock_secretsmanager,
+    secret_identifier,
+    user_id,
+    password,
+):
     """list_secrets() should return a list."""
     create_secret(secret_identifier, user_id, password)
     result = list_secrets()
@@ -56,7 +61,12 @@ def test_returns_list(mock_secretsmanager, secret_identifier, user_id, password)
 
 @pytest.mark.describe("list_secrets()")
 @pytest.mark.it("should return correct secret names")
-def test_returns_correct_list(mock_secretsmanager, secret_identifier, user_id, password):
+def test_returns_correct_list(
+    mock_secretsmanager,
+    secret_identifier,
+    user_id,
+    password,
+):
     """list_secrets() should return a containing the correct secret names."""
     create_secret(secret_identifier, user_id, password)
     result = list_secrets()
@@ -65,7 +75,12 @@ def test_returns_correct_list(mock_secretsmanager, secret_identifier, user_id, p
 
 @pytest.mark.describe("list_secrets()")
 @pytest.mark.it("should return correct secret names when there are multiple secrets")
-def test_returns_correct_list_for_multiple_secrets(mock_secretsmanager, secret_identifier, user_id, password):
+def test_returns_correct_list_for_multiple_secrets(
+    mock_secretsmanager,
+    secret_identifier,
+    user_id,
+    password,
+):
     """list_secrets() should return a containing the correct secret names when there are multiple secrets."""
     create_secret(secret_identifier, user_id, password)
     create_secret("test_secret2", user_id, password)
@@ -76,7 +91,7 @@ def test_returns_correct_list_for_multiple_secrets(mock_secretsmanager, secret_i
 
 @pytest.mark.describe("list_secrets()")
 @pytest.mark.it("should return empty list when there are no secrets stored")
-def test_no_secrets(mock_secretsmanager, secret_identifier, user_id, password):
+def test_no_secrets(mock_secretsmanager):
     """list_secrets() should return an empty list when there are no secrets stored."""
     result = list_secrets()
     assert result == []

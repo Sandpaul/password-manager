@@ -10,10 +10,10 @@ def list_secrets() -> list:
         secret_list (list): a list of AWS Secrets Manager names.
     """
 
-    sm = boto3.client('secretsmanager')
+    sm = boto3.client("secretsmanager")
 
     response = sm.list_secrets()
 
-    secret_list = [secret['Name'] for secret in response['SecretList']]
+    secret_list = [secret["Name"] for secret in response["SecretList"]]
 
     return secret_list
