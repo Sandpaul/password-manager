@@ -1,7 +1,6 @@
 """This module contains the definition for `create_secret()`."""
 
 import boto3
-from botocore import errorfactory
 
 
 def create_secret(secret_identifier, user_id, password):
@@ -16,10 +15,14 @@ def create_secret(secret_identifier, user_id, password):
         status_code (int): the http status code from the request response.
     
     Raises:
+        ResourceExistsException: if a secret with passed secret_identifier already exists.
         KeyError: if any of the keys are missing / empty.
         TypeError: if any of the keys are the wrong type.
         InvalidCharacterError: if secret_identifier contains any invalid characters.
     """
+
+    if len(secret_identifier) == 0 or len(user_id) == 0 or len(password) == 0:
+        raise BlankArgumentError(print("BlankArgumentError: arguments cannot be blank."))
 
     sm = boto3.client("secretsmanager")
 
@@ -32,8 +35,10 @@ def create_secret(secret_identifier, user_id, password):
         status_code = response["ResponseMetadata"]["HTTPStatusCode"]
 
         return status_code
-    
-    except sm.exceptions.ResourceExistsException as e:
+
+    except sm.exceptions.ResourceExistsException as r:
         print(f"ResourceExistsException: {secret_identifier} already exists.")
-        raise e
-        
+        raise r
+
+class BlankArgumentError(Exception):
+    """Traps errors where blank arguments are passed."""
