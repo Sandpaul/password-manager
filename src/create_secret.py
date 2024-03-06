@@ -1,6 +1,7 @@
 """This module contains the definition for `create_secret()`."""
 
 import boto3
+from botocore import errorfactory
 
 
 def create_secret(secret_identifier, user_id, password):
@@ -22,11 +23,17 @@ def create_secret(secret_identifier, user_id, password):
 
     sm = boto3.client("secretsmanager")
 
-    response = sm.create_secret(
-        Name = secret_identifier,
-        SecretString = f"{{'user_id':{user_id}, 'password':{password}}}"
-    )
+    try:
+        response = sm.create_secret(
+            Name = secret_identifier,
+            SecretString = f"{{'user_id':{user_id}, 'password':{password}}}"
+        )
 
-    status_code = response["ResponseMetadata"]["HTTPStatusCode"]
+        status_code = response["ResponseMetadata"]["HTTPStatusCode"]
 
-    return status_code
+        return status_code
+    
+    except sm.exceptions.ResourceExistsException as e:
+        print(f"ResourceExistsException: {secret_identifier} already exists.")
+        raise e
+        

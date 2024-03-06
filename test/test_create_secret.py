@@ -60,3 +60,12 @@ def test_secret_created_correctly(mock_secretsmanager, secret_identifier, user_i
     response = mock_secretsmanager.get_secret_value(SecretId=secret_identifier)
     expected = "{'user_id':test_id, 'password':test_password}"
     assert response['SecretString'] == expected
+
+
+@pytest.mark.describe("create_secret()")
+@pytest.mark.it("should error when secret_identifier already exists")
+def test_secret_already_exists_error(mock_secretsmanager, secret_identifier, user_id, password):
+    """create_secret() should raise an error if the secret_identifier already exists."""
+    create_secret(secret_identifier, user_id, password)
+    with pytest.raises(mock_secretsmanager.exceptions.ResourceExistsException):
+        create_secret(secret_identifier, user_id, password)
