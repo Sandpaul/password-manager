@@ -47,7 +47,12 @@ def password():
 
 @pytest.mark.describe("get_secret()")
 @pytest.mark.it("should return a string")
-def test_returns_string(mock_secretsmanager, secret_id, user_id, password,):
+def test_returns_string(
+    mock_secretsmanager,
+    secret_id,
+    user_id,
+    password,
+):
     """get_secret() should return a string."""
     create_secret(secret_id, user_id, password)
     result = get_secret(secret_id)
@@ -56,7 +61,12 @@ def test_returns_string(mock_secretsmanager, secret_id, user_id, password,):
 
 @pytest.mark.describe("get_secret()")
 @pytest.mark.it("should return a string of user_id and password")
-def test_returns_correct_string(mock_secretsmanager, secret_id, user_id, password,):
+def test_returns_correct_string(
+    mock_secretsmanager,
+    secret_id,
+    user_id,
+    password,
+):
     """get_secret() should return string of correct user_id and password."""
     create_secret(secret_id, user_id, password)
     result = get_secret(secret_id)
@@ -65,7 +75,12 @@ def test_returns_correct_string(mock_secretsmanager, secret_id, user_id, passwor
 
 @pytest.mark.describe("get_secret()")
 @pytest.mark.it("should raise error when passed invalid secret_id")
-def test_errors_on_invalid_id(mock_secretsmanager, secret_id, user_id, password,):
+def test_errors_on_invalid_id(
+    mock_secretsmanager,
+    secret_id,
+    user_id,
+    password,
+):
     """get_secret() should raise BlankArgumentError when passed blank secret_id."""
     create_secret(secret_id, user_id, password)
     with pytest.raises(BlankArgumentError):

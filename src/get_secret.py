@@ -8,26 +8,26 @@ def get_secret(secret_id: str):
 
     Args:
         secret_id (str): the name of the secret to be retrieved.
-    
+
     Returns:
         secret_string (str): a string of the retrieved secret user_id and password.
-    
+
     Raises:
+        BlankArgumentError: if passed a blank secret_id.
+        ResourceNotFoundException: if secret not found in AWS Secrets Manager.
     """
-    
+
     if len(secret_id) == 0:
         raise BlankArgumentError(
             print("BlankArgumentError: secret_id cannot be blank.")
         )
-    
+
     sm = boto3.client("secretsmanager")
-    
+
     try:
-        response = sm.get_secret_value(
-                SecretId=secret_id
-        )
-        return response['SecretString']
-    
+        response = sm.get_secret_value(SecretId=secret_id)
+        return response["SecretString"]
+
     except sm.exceptions.ResourceNotFoundException as r:
         print(f"ResourceNotFoundError: {secret_id} not found.")
         raise r
