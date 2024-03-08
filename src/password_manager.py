@@ -19,20 +19,18 @@ def password_manager():
     while True:
         print("\nPlease specify [e]ntry, [r]etrieval, [d]eletion, [l]isting or e[x]it:")
 
-        input_dict = {}
+        choice = input("Enter your choice: ")
 
-        input_dict["choice"] = input("Enter your choice: ")
-
-        if input_dict["choice"] == "e":
+        if choice == "e":
             try:
-                input_dict["secret_id"] = input("Enter a Secret Identifier: ")
-                input_dict["user_id"] = input("Enter a UserID: ")
-                input_dict["password"] = input("Enter a Password: ")
+                secret_id = input("Enter a Secret Identifier: ")
+                user_id = input("Enter a UserID: ")
+                password = input("Enter a Password: ")
 
                 response = create_secret(
-                    input_dict["secret_id"],
-                    input_dict["user_id"],
-                    input_dict["password"],
+                    secret_id,
+                    user_id,
+                    password,
                 )
                 if response == 200:
                     print("✅ Secret saved.")
@@ -40,27 +38,27 @@ def password_manager():
             except Exception:
                 print("❌ Secret not saved.")
 
-        elif input_dict["choice"] == "r":
+        elif choice == "r":
             try:
-                input_dict["secret_id"] = input("Specify secret to retrieve: ")
-                secret_string = get_secret(input_dict["secret_id"])
-                write_secret(input_dict["secret_id"], secret_string)
-                print(f"✅ Secret stored in local file {input_dict['secret_id']}.txt")
+                secret_id = input("Specify secret to retrieve: ")
+                secret_string = get_secret(secret_id)
+                write_secret(secret_id, secret_string)
+                print(f"✅ Secret stored in local file {secret_id}.txt")
 
             except Exception:
                 print("❌ Secret not retrieved.")
 
-        elif input_dict["choice"] == "d":
+        elif choice == "d":
             try:
-                input_dict["secret_id"] = input("Specify secret to delete: ")
-                response = delete_secret(input_dict["secret_id"])
+                secret_id = input("Specify secret to delete: ")
+                response = delete_secret(secret_id)
                 if response == 200:
                     print("✅ Deleted")
 
             except Exception:
                 print("❌ Unable to delete.")
 
-        elif input_dict["choice"] == "l":
+        elif choice == "l":
             secret_list = list_secrets()
             if len(secret_list) > 0:
                 print(f"{len(secret_list)} secret(s) available: ")
@@ -69,7 +67,7 @@ def password_manager():
             else:
                 print("0 secrets available.")
 
-        elif input_dict["choice"] == "x":
+        elif choice == "x":
             print("\nThankyou for using Password Manager. Goodbye. 🕵️")
             print("------------------------------------------------")
             break
