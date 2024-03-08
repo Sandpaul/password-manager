@@ -4,7 +4,7 @@ import boto3
 
 
 def get_secret(secret_id: str):
-    """A function to retrieve the details of a secret from AWS Secret Manager and save them to a text file.
+    """A function to retrieve the details of a secret from AWS Secret Manager and return them as a string.
 
     Args:
         secret_id (str): the name of the secret to be retrieved.
