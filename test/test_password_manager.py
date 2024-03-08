@@ -67,3 +67,21 @@ def test_retrieves_secret(mock_input, mock_secretsmanager):
     password_manager()
     with open("test_id.txt", "r", encoding="utf-8") as f:
         assert f.read() == "{'user_id':test_user, 'password':test_password}"
+
+
+@pytest.mark.describe("password_manager()")
+@pytest.mark.it("d: should successfully delete secret")
+@patch(
+    "builtins.input",
+    side_effect=[
+        "d",
+        "test_id",
+        "x",
+    ],
+)
+def test_deletes_secret(mock_input, mock_secretsmanager):
+    """password_manager() should delete a secret."""
+    create_secret("test_id", "test_user", "test_password")
+    assert len(list_secrets()) == 1
+    password_manager()
+    assert len(list_secrets()) == 0
