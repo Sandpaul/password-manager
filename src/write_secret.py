@@ -9,5 +9,5 @@ def write_secret(secret_id: str, secret_string: str):
         secret_string (str): the string to be saved to a text file.
     """
 
-    with open(f'{secret_id}.txt', 'w', encoding='utf-8') as f:
+    with open(f"{secret_id}.txt", "w", encoding="utf-8") as f:
         f.write(secret_string)

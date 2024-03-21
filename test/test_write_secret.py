@@ -85,4 +85,3 @@ def test_saves_correct_data(
     write_secret(p, secret_string)
     p2 = d / f"{secret_id}.txt"
     assert p2.read_text(encoding="utf-8") == secret_string
-    
